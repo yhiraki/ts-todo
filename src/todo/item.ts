@@ -1,48 +1,51 @@
-export type TodoEntity = {
+export type Entity = {
   id: number
   name: string
   description: string
   createdAt: Date
   updatedAt: Date
-  history: TodoHistory[]
+  history: History[]
 }
 
-type TodoHistory = {
+type History = {
   state: string
   timestamp: Date
 }
 
-type TodoItemUpdateOptions = {
+type UpdateOptions = {
   name: string
   description: string
-  state: TodoState
+  state: State
 }
 
-export const StateTodo = 'TODO'
-export const StateDone = 'DONE'
-export type TodoState = string
+export type State = string
+export const TODO: State = 'TODO'
+export const DONE: State = 'DONE'
 
-
-export class TodoItem {
-  private record: TodoEntity
+export class Item {
+  private record: Entity
 
   get id(): number { return this.record.id }
-  get name(): string { return this.record.name }
-  get description(): string { return this.record.description }
-  get state(): string { return this.record.history[this.record.history.length - 1].state }
-  get done(): boolean { return this.state === StateDone }
-
   set id(value: number) { this.record.id = value }
-  set state(value: TodoState) { this.updateState(value) }
+
+  get name(): string { return this.record.name }
   set name(value: string) { this.updateName(value) }
 
-  constructor(record: Partial<TodoEntity>) {
+  get description(): string { return this.record.description }
+
+  get state(): State { return this.record.history[this.record.history.length - 1].state }
+
+  get done(): boolean { return this.state === DONE }
+
+  set state(value: State) { this.updateState(value) }
+
+  constructor(record: Partial<Entity>) {
     const now = new Date()
-    const defaultHistory: TodoHistory = {
-      state: StateTodo,
+    const defaultHistory: History = {
+      state: TODO,
       timestamp: now
     }
-    const defaultTodoEntity: TodoEntity = {
+    const defaultTodoEntity: Entity = {
       id: -1,
       name: '',
       description: '',
@@ -53,8 +56,8 @@ export class TodoItem {
     this.record = { ...defaultTodoEntity, ...record }
   }
 
-  update(options: Partial<TodoItemUpdateOptions>) {
-    let key: keyof TodoItemUpdateOptions
+  update(options: Partial<UpdateOptions>) {
+    let key: keyof UpdateOptions
     for (key in options) {
       const value = options[key]
       if (!value) continue
@@ -69,7 +72,7 @@ export class TodoItem {
     }
   }
 
-  updateState(newState: TodoState) {
+  updateState(newState: State) {
     const now = new Date()
     this.record.history.push({ state: newState.toUpperCase(), timestamp: now })
     this.record.updatedAt = now

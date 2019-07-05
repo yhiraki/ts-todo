@@ -1,23 +1,22 @@
+import { State, Item } from './item'
 
-import {TodoState, TodoItem} from './item'
-
-type TodoListFilterOptions = {
+type FilterOptions = {
   name: string
-  state: TodoState
+  state: State
   done: boolean
 }
 
-export class TodoList {
-  todos: TodoItem[]
+export class List {
+  todos: Item[]
   private lastId: number = 0
 
   get length(): number { return this.todos.length }
 
-  constructor(todos: TodoItem[] = []) {
+  constructor(todos: Item[] = []) {
     this.todos = todos
   }
 
-  add(item: TodoItem) {
+  add(item: Item) {
     item.id = this.lastId++
     this.todos.push(item)
   }
@@ -26,16 +25,16 @@ export class TodoList {
     this.todos = this.todos.filter(item => item.id !== id)
   }
 
-  find(id: number): TodoItem | undefined {
+  find(id: number): Item | undefined {
     return this.todos.find(item => item.id === id)
   }
 
-  filter(options: Partial<TodoListFilterOptions>): TodoItem[] {
+  filter(options: Partial<FilterOptions>): Item[] {
     if ('state' in options && typeof options.state === 'string')
       options.state = options.state.toUpperCase()
 
     return this.todos.filter(item => {
-      let key: keyof TodoListFilterOptions
+      let key: keyof FilterOptions
       for (key in options) {
         const value = options[key]
         switch (key) {

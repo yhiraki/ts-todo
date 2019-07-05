@@ -1,11 +1,11 @@
-import { TodoList, TodoItem } from '../src'
+import todo from '../src'
 
 describe('Add todoitem', () => {
 
   it('Todo count will be incremented.', () => {
-    const todos = new TodoList()
+    const todos = new todo.List()
     expect(todos.length).toEqual(0)
-    todos.add(new TodoItem({ name: 'hoge' }))
+    todos.add(new todo.Item({ name: 'hoge' }))
     expect(todos.length).toEqual(1)
   })
 
@@ -14,8 +14,8 @@ describe('Add todoitem', () => {
 describe('Delete todoitem', () => {
 
   it('Todo count will be decremented.', () => {
-    const todos = new TodoList()
-    todos.add(new TodoItem({ name: 'hoge' }))
+    const todos = new todo.List()
+    todos.add(new todo.Item({ name: 'hoge' }))
     expect(todos.length).toEqual(1)
     todos.delete(0)
     expect(todos.length).toEqual(0)
@@ -26,12 +26,12 @@ describe('Delete todoitem', () => {
 describe('Find todotem', () => {
 
   it('Find by id', () => {
-    const todos = new TodoList()
-    todos.add(new TodoItem({ name: 'a' }))
-    todos.add(new TodoItem({ name: 'b' }))
-    todos.add(new TodoItem({ name: 'c' }))
+    const todos = new todo.List()
+    todos.add(new todo.Item({ name: 'a' }))
+    todos.add(new todo.Item({ name: 'b' }))
+    todos.add(new todo.Item({ name: 'c' }))
 
-    let result: TodoItem | undefined
+    let result: todo.Item | undefined
 
     result = todos.find(0)
     if (result) {
@@ -50,10 +50,10 @@ describe('Find todotem', () => {
 
 describe('Update state', () => {
 
-  let t: TodoItem
+  let t: todo.Item
 
   beforeEach(() => {
-    t = new TodoItem({ name: 'hoge' })
+    t = new todo.Item({ name: 'hoge' })
   })
 
   it('Default state is TODO', () => {
@@ -101,10 +101,10 @@ describe('Update state', () => {
 
 describe('Update name', () => {
 
-  let t: TodoItem
+  let t: todo.Item
 
   beforeEach(() => {
-    t = new TodoItem({ name: 'hoge' })
+    t = new todo.Item({ name: 'hoge' })
   })
 
   it('Name is updated', () => {
@@ -133,14 +133,14 @@ describe('Update name', () => {
 
 describe('Filter todoitem', () => {
 
-  const t1 = new TodoItem({ name: '1' })
+  const t1 = new todo.Item({ name: '1' })
   t1.updateState('DONE')
-  const t2 = new TodoItem({ name: '2' })
+  const t2 = new todo.Item({ name: '2' })
   t2.updateState('DONE')
-  const t3 = new TodoItem({ name: '3' })
-  const t4 = new TodoItem({ name: '4' })
-  const t5 = new TodoItem({ name: '5' })
-  const todos = new TodoList([t1, t2, t3, t4, t5])
+  const t3 = new todo.Item({ name: '3' })
+  const t4 = new todo.Item({ name: '4' })
+  const t5 = new todo.Item({ name: '5' })
+  const todos = new todo.List([t1, t2, t3, t4, t5])
 
   it('Can be filter by state', () => {
     expect(
