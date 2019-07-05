@@ -1,5 +1,11 @@
 import { State, Item } from './item'
 
+type ListItem = {
+  id: number
+  parent: number | null
+  item: Item
+}
+
 type FilterOptions = {
   name: string
   state: State
@@ -7,34 +13,43 @@ type FilterOptions = {
 }
 
 export class List {
-  todos: Item[]
-  private lastId: number = 0
+  todos: ListItem[]
+  private lastId: number = 1
 
   get length(): number { return this.todos.length }
 
-  constructor(todos: Item[] = []) {
+  constructor(todos: ListItem[] = []) {
     this.todos = todos
   }
 
-  add(item: Item) {
-    item.id = this.lastId++
-    this.todos.push(item)
+  add(item: Item, id: number | null = null, parent: number | null = null) {
+    if (id) this.lastId = Math.max(this.lastId, id)
+    this.todos.push({
+      id: this.lastId++,
+      parent: parent,
+      item: item
+    })
   }
 
   delete(id: number) {
-    this.todos = this.todos.filter(item => item.id !== id)
+    const target = this.find(id)
+    if (target)
+      this.todos = this.todos.filter(item => item.id !== id)
+    return target
   }
 
-  find(id: number): Item | undefined {
+  find(id: number): ListItem | undefined {
     return this.todos.find(item => item.id === id)
   }
 
-  filter(options: Partial<FilterOptions>): Item[] {
+  filter(options: Partial<FilterOptions>): ListItem[] {
     if ('state' in options && typeof options.state === 'string')
       options.state = options.state.toUpperCase()
 
-    return this.todos.filter(item => {
+    return this.todos.filter(listitem => {
+      const item = listitem.item
       let key: keyof FilterOptions
+
       for (key in options) {
         const value = options[key]
         switch (key) {

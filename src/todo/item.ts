@@ -1,5 +1,4 @@
 export type Entity = {
-  id: number
   name: string
   description: string
   createdAt: Date
@@ -25,9 +24,6 @@ export const DONE: State = 'DONE'
 export class Item {
   private record: Entity
 
-  get id(): number { return this.record.id }
-  set id(value: number) { this.record.id = value }
-
   get name(): string { return this.record.name }
   set name(value: string) { this.updateName(value) }
 
@@ -46,7 +42,6 @@ export class Item {
       timestamp: now
     }
     const defaultTodoEntity: Entity = {
-      id: -1,
       name: '',
       description: '',
       createdAt: now,
