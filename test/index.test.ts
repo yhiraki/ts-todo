@@ -61,15 +61,15 @@ describe('Update state', () => {
   })
 
   it('History is added', () => {
-    expect(t.record.history.length).toEqual(1)
+    expect(t['record'].history.length).toEqual(1)
     t.updateState('DONE')
-    expect(t.record.history.length).toEqual(2)
+    expect(t['record'].history.length).toEqual(2)
   })
 
   it('Timestamp is updated', () => {
-    const oldTimestamp = t.record.updatedAt
+    const oldTimestamp = t['record'].updatedAt
     t.updateState('DONE')
-    expect(oldTimestamp).not.toBe(t.record.updatedAt)
+    expect(oldTimestamp).not.toBe(t['record'].updatedAt)
   })
 
   it('Can be DONE', () => {
@@ -114,9 +114,9 @@ describe('Update name', () => {
   })
 
   it('Timestamp is updated', () => {
-    const oldTimestamp = t.record.updatedAt
+    const oldTimestamp = t['record'].updatedAt
     t.updateName('a')
-    expect(oldTimestamp).not.toBe(t.record.updatedAt)
+    expect(oldTimestamp).not.toBe(t['record'].updatedAt)
   })
 
   it('Use setter', () => {

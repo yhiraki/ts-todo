@@ -23,7 +23,7 @@ type TodoItemUpdateOptions = {
 }
 
 export class TodoItem {
-  record: TodoEntity
+  private record: TodoEntity
 
   get id(): number { return this.record.id }
   get name(): string { return this.record.name }
