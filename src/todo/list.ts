@@ -1,4 +1,5 @@
 import { State, Item } from './item'
+import { Workflow } from './workflow'
 
 type ListItem = {
   id: number
@@ -12,14 +13,22 @@ type FilterOptions = {
   done: boolean
 }
 
+const defaultWorkflow = new Workflow([
+  { id: 1, initial: true, state: 'TODO', next: 2, keywords: ['TODO'] },
+  { id: 2, initial: true, state: 'DOING', next: 3, keywords: ['DOING'] },
+  { id: 3, initial: false, state: 'DONE', next: null, keywords: ['DONE'] }
+])
+
 export class List {
   todos: ListItem[]
+  readonly workflow: Workflow
   private lastId: number = 1
 
   get length(): number { return this.todos.length }
 
-  constructor(todos: ListItem[] = []) {
+  constructor(todos: ListItem[] = [], workflow: Workflow = defaultWorkflow) {
     this.todos = todos
+    this.workflow = workflow
   }
 
   add(item: Item, id: number | null = null, parent: number | null = null) {

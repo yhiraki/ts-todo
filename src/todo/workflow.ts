@@ -6,17 +6,24 @@ type State = {
   keywords: string[]
 }
 
+const isArrayUnique = (a: any[]) => {
+  return Array.from(new Set(a)).length !== a.length
+}
+
 export class Workflow {
   readonly states: State[]
 
   constructor(states: State[]) {
     this.states = states
 
-    if (Array.from(new Set(this.allStates())).length !== this.allStates().length)
+    if (isArrayUnique(this.allStates()))
       throw new Error('States must be unique')
 
-    if (Array.from(new Set(this.allKeywords())).length !== this.allKeywords().length)
+    if (isArrayUnique(this.allKeywords()))
       throw new Error('Keywords must be unique')
+
+    if (isArrayUnique(this.states.map(s => s.id)))
+      throw new Error('Ids must be unique')
 
     if (this.states.filter(s => s.initial).length === 0)
       throw new Error('At least one initial state required')
