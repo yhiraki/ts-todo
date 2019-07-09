@@ -1,10 +1,18 @@
 import { State, Item } from './item'
 import { Workflow } from './workflow'
 
-type ListItem = {
-  id: number
-  parent: number | null
-  item: Item
+class ListItem {
+  readonly id: number
+  readonly parent: number | null
+  readonly item: Item
+  readonly workflow: Workflow
+
+  constructor(id: number, item: Item, workflow: Workflow, parent: number | null = null) {
+    this.id = id
+    this.item = item
+    this.workflow = workflow
+    this.parent = parent
+  }
 }
 
 type FilterOptions = {
@@ -33,11 +41,7 @@ export class List {
 
   add(item: Item, id: number | null = null, parent: number | null = null) {
     if (id) this.lastId = Math.max(this.lastId, id)
-    this.todos.push({
-      id: this.lastId++,
-      parent: parent,
-      item: item
-    })
+    this.todos.push(new ListItem(this.lastId++, item, this.workflow, parent))
   }
 
   delete(id: number) {

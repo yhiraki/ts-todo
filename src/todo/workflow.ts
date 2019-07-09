@@ -50,4 +50,11 @@ export class Workflow {
     })
   }
 
+  nextState(state: string): State | undefined {
+    const s = this.getState({ state })
+    if (s && s.next)
+      return this.getState({ next: s.next })
+    return
+  }
+
 }
